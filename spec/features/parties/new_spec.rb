@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe "New Party" do
 
   before(:each) do
-    @user_1 = User.create!(name: "Carie Hiller", email: "carie@gmail.com")
-    @user_2 = User.create!(name: "Barry Hiller", email: "barie@gmail.com")
-    @user_3 = User.create!(name: "Carl Hiller", email: "cccarie@gmail.com")
+    @user_1 = User.create!(name: "Carie Hiller", email: "carie@gmail.com", password: "seacrets")
+    @user_2 = User.create!(name: "Barry Hiller", email: "barie@gmail.com", password: "Seacrest")
+    @user_3 = User.create!(name: "Carl Hiller", email: "cccarie@gmail.com", password: "seeshells")
     visit new_user_movie_party_path(@user_1.id, 550)
   end
 
