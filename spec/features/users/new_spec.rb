@@ -9,6 +9,8 @@ RSpec.describe "register" do
 
     fill_in :name, with: "Mallory Vining"
     fill_in :email, with: "eurotrashdemon@gmail.com"
+    fill_in :password, with: "wow_secure"
+    fill_in :password_confirmation, with: "wow_secure"
 
     click_button "Create New User"
 
@@ -27,5 +29,38 @@ RSpec.describe "register" do
     click_button "Create New User"
     expect(current_path).to eq('/register')
     expect(page).to have_content("This user could not be created. Please check your form.")
+  end
+
+  describe "Logging in" do
+    it "can log in with valid credentials" do
+      user = User.create(name: "Mal", email: "eurotrashdemon@gmail.com", password: "wow_secure")
+
+      visit "/register"
+
+      click_on "I already have an account"
+
+      expect(current_path).to eq("/login")
+
+      fill_in :email, with: user.email
+      fill_in :password, with: user.password
+
+      click_on "Log In"
+
+      expect(current_path).to eq("/users/#{user.id}")
+    end
+
+    it "can't log in without valid credentials" do
+      user = User.create(name: "Mal", email: "eurotrashdemon@gmail.com", password: "wow_secure")
+
+      visit "/login"
+
+      fill_in :email, with: user.email
+      fill_in :password, with: "wowza_so_secure"
+
+      click_on "Log In"
+
+      expect(current_path).to eq("/login")
+      expect(page).to have_content("Incorrect login. Please try again")
+    end
   end
 end
