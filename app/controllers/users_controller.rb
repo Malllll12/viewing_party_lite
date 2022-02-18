@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
+  before_action :require_user
+
   def show
-    @user = User.find(params[:id])
+    @user = User.find(params[:user_id])
   end
 
   def new
@@ -9,27 +11,15 @@ class UsersController < ApplicationController
   def create
     user = User.create(user_params)
     if user.save
-      redirect_to user_path(user.id)
+      session[:user_id] = user.id
+      redirect_to user_path(user)
       flash[:alert] = "Welcome to your Viewing Party!"
+    elsif params[:password] != params[:password_confirmation]
+      redirect_to '/register'
+      flash[:error] = "This user could not be created. Please check your form."
     else
       redirect_to '/register'
       flash[:error] = "This user could not be created. Please check your form."
-    end
-  end
-
-  def login_form
-
-  end
-
-  def login_user
-    user = User.find_by(email: params[:email])
-    if user && user.authenticate(params[:password])
-      session[:user_id] = user.id
-      flash[:success] = "Welcome, #{user.name}!"
-      redirect_to user_path(user.id)
-    else
-      flash[:error] = "Incorrect login. Please try again"
-      render :login_form
     end
   end
 

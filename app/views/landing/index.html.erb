@@ -1,6 +1,16 @@
 <section id="header"><h1>Viewing Party Lite</h1></section>
-<%= button_to "Create New User", '/register', method: :get %>
-<h3>All Users:</h3>
-<% @users.each do |user| %>
-  <p><%= link_to user.name, user_path(user.id) %>'s Dashboard</p>
+
+<% if current_user  %>
+  <%= link_to "Logout", '/logout', method: :delete %>
+<% else %>
+  <%= link_to "Create New User", '/register', method: :get %>
+  <%= link_to "Log In", '/login' %>
+<% end %>
+
+<% if current_user %>
+  <h3>Other Users:</h3>
+  <% @users.each do |user| %>
+    <%= user.email %>
+    <br>
+  <% end %>
 <% end %>

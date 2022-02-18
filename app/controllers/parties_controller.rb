@@ -1,7 +1,7 @@
 class PartiesController < ApplicationController
-  before_action :user
+  before_action :require_user
   def new
-    @users = User.all
+    # @users = User.all
 
     @movie = MoviesFacade.get_movie(params[:movie_id])
   end
@@ -22,9 +22,9 @@ class PartiesController < ApplicationController
     end
   end
 
-  def user
-    @user = User.find(params[:user_id])
-  end
+  # def user
+  #   @user = User.find(params[:user_id])
+  # end
 
   private
   def party_params
